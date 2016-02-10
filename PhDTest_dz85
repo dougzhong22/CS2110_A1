@@ -1,0 +1,105 @@
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class PhDTest_dz85 {
+
+	//test case input args
+	private String n1="Bob";
+	private String n2="Jess";
+	private String n3="Arm";
+	private String n4="Sam";
+	private int y1=1995;
+	private int y2=1996;
+	private int y3=1997;
+	private int y4=1990;
+	private int m1=5;
+	private int m2=6;
+	private int m3=2;
+	private int m4=9;
+	private char g1='m';
+	private char g2='f';
+	private char g3='f';
+	private char g4='m';
+	private PhD ts1 = new PhD(n1,y1,m1,g1);
+	private PhD ts2= new PhD(n2,y2,m2,g2);
+	
+	public PhDTest_dz85(){
+		
+	}
+	
+	//test1 for group A
+	public void testConstructor1() {
+		assert ts1.getName().equals(n1);
+		assert ts1.getYear() == y1;
+		assert ts1.getMonth() == m1;
+		assert !(ts1.isFemale());
+		assert ts1.advisor1()==null;
+		assert ts1.advisor2()==null;
+		assert ts1.numAdvisees()==0;
+		System.out.println("Test subject 1 passes");
+
+		assert ts2.getName().equals(n2);
+		assert ts2.getYear() == y2;
+		assert ts2.getMonth() == m2;
+		assert ts2.isFemale();
+		assert ts2.advisor1()==null;
+		assert ts2.advisor2()==null;
+		assert ts2.numAdvisees()==0;
+		System.out.println("Test subject 2 passes");
+	}
+	
+	public void testGroupB() {
+		PhD ts1= new PhD(n1,y1,m1,g1);
+		PhD ts2= new PhD(n2,y2,m2,g2);
+
+		ts2.addAdvisor1(ts1);
+		ts2.addAdvisor2(ts2);
+
+		assert ts1.numAdvisees()==1;
+		assert ts2.numAdvisees()==1;
+		assert ts2.advisor1()==ts1;
+		assert ts2.advisor2()==ts2;
+		assert ts1.advisor1()!=ts2;
+		
+		System.out.println("Passed Group B test");
+	}
+	
+	public void testGroupC() {
+		PhD ts3=new PhD(n3,y3,m3,g3,ts1);
+		PhD ts4=new PhD(n4,y4,m4,g4,ts1,ts2);
+		
+		assert ts1.numAdvisees()==2;
+		assert ts2.numAdvisees()==1;
+		assert ts3.advisor1()==ts1;
+		assert ts4.advisor2()==ts2;
+		assert ts4.advisor1()==ts1;
+		assert ts2.advisor1()!=ts3;
+		assert ts3.numAdvisees()==0;
+		assert ts3.numAdvisees()==ts4.numAdvisees();
+		System.out.println("Passed Group C test");
+	}
+	
+	public  void testGroupD() {
+		PhD ts3=new PhD(n3,y3,m3,g3,ts1);
+		PhD ts4=new PhD(n4,y4,m4,g4,ts1,ts2);
+		
+		assert ts1.gotBefore(ts3);
+		assert !ts2.gotBefore(ts4);
+		assert ts3.arePhDSiblings(ts4);
+		assert !ts2.arePhDSiblings(ts3);
+		
+		System.out.println("Passed Group D test");
+	}
+	 
+	public static void main(String[] args) {
+		//TESTS WERE RUN SEPARATE FROM EACH OTHER
+		PhDTest_dz85 test_obj=new PhDTest_dz85();
+		//test_obj.testConstructor1();
+		//test_obj.testGroupB();
+		test_obj.testGroupC();
+		//test_obj.testGroupD();
+		
+	}
+
+}
